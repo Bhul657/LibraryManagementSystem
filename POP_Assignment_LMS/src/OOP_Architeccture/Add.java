@@ -10,108 +10,95 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+
+import DB_Connect.DBConnection; // Import the DBConnection class to establish the connection
 
 public class Add extends Application {
 
-    // MySQL connection variables
-    private static final String URL = "jdbc:mysql://localhost:3306/menu"; // Update with your database URL
-    private static final String USER = "root"; // Update with your MySQL username
-    private static final String PASSWORD = "bhularun7"; // Update with your MySQL password
-
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setResizable(false);
         Pane pane = new Pane();
         Scene scene = new Scene(pane);
-        Paint paint = Paint.valueOf("Green");
-        scene.setFill(paint);
+        scene.setFill(Paint.valueOf("Green"));
         primaryStage.setScene(scene);
-    
+
         primaryStage.setTitle("Add Book");
         primaryStage.setWidth(400);
-        primaryStage.setHeight(350);
+        primaryStage.setHeight(420);
         primaryStage.setAlwaysOnTop(true);
-        
-        // Set Background Color on Stage
+
         pane.setStyle("-fx-background-color: #ADD8E6;");
-        
-        Label lblAdd_Book, lblBook_ID, lblTitle, lblAuthor, lblQuantity, lblMessage;
-        TextField txtBook_ID, txtTitle, txtAuthor, txtQuantity;
-        Button btnAdd, btnClose;
-        
-        lblAdd_Book = new Label("Add Book");
+
+        Label lblAdd_Book = new Label("Add Book");
         lblAdd_Book.relocate(125, 0);
         lblAdd_Book.setFont(new Font("Arial", 30));
-        
-        lblBook_ID = new Label("Book_ID:");
-        lblBook_ID.relocate(30, 55);
-        lblBook_ID.setFont(new Font("Arial", 15)); 
-        txtBook_ID = new TextField();
-        txtBook_ID.relocate(110, 50);
-        
-        lblTitle = new Label("Title:");
-        lblTitle.relocate(30, 105);
-        lblTitle.setFont(new Font("Arial", 15));
-        txtTitle = new TextField();
-        txtTitle.relocate(110, 100);
-        
-        lblAuthor = new Label("Author:");
-        lblAuthor.relocate(30, 155);
-        lblAuthor.setFont(new Font("Arial", 15));
-        txtAuthor = new TextField();
-        txtAuthor.relocate(110, 150);
-        
-        lblQuantity = new Label("Quantity:");
-        lblQuantity.relocate(30, 205);
-        lblQuantity.setFont(new Font("Arial", 15));
-        txtQuantity = new TextField();
-        txtQuantity.relocate(110, 200);
-        
-        btnClose = new Button("Close");
-        btnClose.relocate(200, 250);
 
-        // Event handler for the Close button
+        Label lblBook_ID = new Label("Book ID:");
+        lblBook_ID.relocate(30, 50);
+        lblBook_ID.setFont(new Font("Arial", 15));
+        TextField txtBook_ID = new TextField();
+        txtBook_ID.relocate(110, 45);
+
+        Label lblTitle = new Label("Title:");
+        lblTitle.relocate(30, 100);
+        lblTitle.setFont(new Font("Arial", 15));
+        TextField txtTitle = new TextField();
+        txtTitle.relocate(110, 95);
+
+        Label lblAuthor = new Label("Author:");
+        lblAuthor.relocate(30, 150);
+        lblAuthor.setFont(new Font("Arial", 15));
+        TextField txtAuthor = new TextField();
+        txtAuthor.relocate(110, 145);
+
+        Label lblEdition = new Label("Edition:");
+        lblEdition.relocate(30, 200);
+        lblEdition.setFont(new Font("Arial", 15));
+        TextField txtEdition = new TextField();
+        txtEdition.relocate(110, 195);
+
+        Label lblQuantity = new Label("Quantity:");
+        lblQuantity.relocate(30, 250);
+        lblQuantity.setFont(new Font("Arial", 15));
+        TextField txtQuantity = new TextField();
+        txtQuantity.relocate(110, 245);
+
+        Button btnClose = new Button("Close");
+        btnClose.relocate(200, 300);
         btnClose.setOnAction(event -> goBackToDashboard(primaryStage));
-        
-        btnAdd = new Button("Add");
-        btnAdd.relocate(120, 250);
-        
-         // Message Label for Errors/Success
-        lblMessage = new Label();
-        lblMessage.relocate(30, 280);
+
+        Button btnAdd = new Button("Add");
+        btnAdd.relocate(125, 300);
+
+        Label lblMessage = new Label();
+        lblMessage.relocate(30, 330);
         lblMessage.setFont(new Font("Arial", 12));
 
         // Event handler for the Add button
-        btnAdd.setOnAction(event -> addBook(txtBook_ID.getText(), txtTitle.getText(), txtAuthor.getText(), txtQuantity.getText(), lblMessage));
-        
+        btnAdd.setOnAction(event -> addBook(txtBook_ID.getText(), txtTitle.getText(), txtAuthor.getText(), txtEdition.getText(), txtQuantity.getText(), lblMessage));
+
+        // Add all components to the pane
+        pane.getChildren().addAll(lblAdd_Book, lblBook_ID, txtBook_ID, lblTitle, txtTitle, lblAuthor, txtAuthor,
+                lblEdition, txtEdition, lblQuantity, txtQuantity, btnAdd, btnClose, lblMessage);
+
         primaryStage.show();
-        
-        pane.getChildren().addAll(lblAdd_Book, lblBook_ID, lblTitle, lblAuthor, lblQuantity, txtBook_ID, txtTitle, txtAuthor, txtQuantity, btnAdd, btnClose, lblMessage);
     }
 
-    // Method to add a book to the database
-    private void addBook(String bookID, String title, String author, String quantity, Label lblMessage) {
-        Connection conn = null;
-        PreparedStatement stmt = null;
+    // Method to add a book to the database using the DBConnection class
+    private void addBook(String bookID, String title, String author, String edition, String quantity, Label lblMessage) {
+        try (Connection conn = DBConnection.getConnection(); // Get connection from DBConnection
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO books (book_id, title, author, edition, quantity) VALUES (?, ?, ?, ?, ?)");) {
 
-        try {
-            // Establish connection to the MySQL database
-            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            stmt.setString(1, bookID);
+            stmt.setString(2, title);
+            stmt.setString(3, author);
+            stmt.setString(4, edition);
+            stmt.setInt(5, Integer.parseInt(quantity));
 
-            // SQL query to insert a new book
-            String sql = "INSERT INTO books (book_id, title, author, quantity) VALUES (?, ?, ?, ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, bookID);   // Set the Book_ID
-            stmt.setString(2, title);    // Set the Title
-            stmt.setString(3, author);   // Set the Author
-            stmt.setInt(4, Integer.parseInt(quantity)); // Set the Quantity
-
-            // Execute the query to insert the book into the database
             int rowsAffected = stmt.executeUpdate();
 
-            // Check if the insertion was successful and update the message label
             if (rowsAffected > 0) {
                 lblMessage.setText("Book added successfully!");
                 lblMessage.setStyle("-fx-text-fill: green;");
@@ -122,24 +109,12 @@ public class Add extends Application {
         } catch (Exception e) {
             lblMessage.setText("Error: " + e.getMessage());
             lblMessage.setStyle("-fx-text-fill: red;");
-        } finally {
-            // Close resources
-            try {
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (Exception e) {
-                lblMessage.setText("Error: " + e.getMessage());
-                lblMessage.setStyle("-fx-text-fill: red;");
-            }
         }
     }
 
-    // Method to go back to the User Dashboard
     private void goBackToDashboard(Stage primaryStage) {
-        // Create an instance of the User_Dashboard class
-        User_Dashboard userDashboard = new User_Dashboard();
+        Librarian_Dashboard userDashboard = new Librarian_Dashboard();
         try {
-            // Switch to the User Dashboard scene
             userDashboard.start(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,6 +122,6 @@ public class Add extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args); // Call start method
+        launch(args);
     }
 }
