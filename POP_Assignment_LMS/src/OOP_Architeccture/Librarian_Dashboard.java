@@ -4,239 +4,182 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Librarian_Dashboard extends Application {
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setResizable(false);
-		Pane pane1 = new Pane();
-		Scene scene1 = new Scene(pane1);
-		
-		BorderPane root = new BorderPane();
-		Scene scene = new Scene(root, 800, 450);
-		scene.setFill(Color.LIGHTBLUE);
-		primaryStage.setScene(scene);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setResizable(false);
+        BorderPane root = new BorderPane();
+        Scene scene = new Scene(root, 900, 520); // width: 900, height: 520
+        scene.setFill(Color.LIGHTBLUE); // light blue background
+        primaryStage.setScene(scene);
 
-		// Sidebar
-		VBox sidebar = new VBox(20);
-		sidebar.setPadding(new Insets(20));
-		sidebar.setStyle("-fx-background-color: #ffffff;");
-		sidebar.setPrefWidth(200);
+        // LEFT SIDEBAR 
+        VBox sidebar = new VBox(20); // Vertical box with 20px spacing between buttons
+        sidebar.setPadding(new Insets(20)); // Padding inside the sidebar
+        sidebar.setStyle("-fx-background-color: #ffffff;"); // White background
+        sidebar.setPrefWidth(200); // Sidebar width
 
-		// Button
-		Button btnAdd, btnSearch, btnUpdate, btnRemove, btnCalculateFine, btnSignOut;
-		btnAdd = new Button("Add");
-		btnAdd.relocate(30, 20);
-		pane1.getChildren().add(btnAdd);
-		
-		btnSearch = new Button("Search");
-		btnSearch.relocate(30, 80);
-		pane1.getChildren().add(btnSearch);
-		
-		btnUpdate = new Button("Update");
-		btnUpdate.relocate(30, 140);
-		pane1.getChildren().add(btnUpdate);
-		
-		btnRemove = new Button("Remove");
-		btnRemove.relocate(30, 200);
-		pane1.getChildren().add(btnRemove);
-		
-		btnCalculateFine = new Button("Calculate Fine");
-		btnCalculateFine.relocate(30, 260);
-		pane1.getChildren().add(btnCalculateFine);
+        // Creating all the sidebar buttons
+        Button btnAdd = new Button("Add");
+        Button btnSearch = new Button("Search");
+        Button btnUpdate = new Button("Update");
+        Button btnRemove = new Button("Remove");
+        Button btnCalculateFine = new Button("Calculate Fine");
+        Button btnSignOut = new Button("Sign Out");
 
-		btnSignOut = new Button("Sign Out");
-		btnSignOut.relocate(30, 260);
-		pane1.getChildren().add(btnSignOut);;
-		
-		// For Same Size Button
-		double buttonWidth = 120;
-		btnAdd.setPrefWidth(buttonWidth);
-		btnSearch.setPrefWidth(buttonWidth);
-		btnUpdate.setPrefWidth(buttonWidth);
-		btnRemove.setPrefWidth(buttonWidth);
-		btnCalculateFine.setPrefWidth(buttonWidth);
-		btnSignOut.setPrefWidth(buttonWidth); 
+        // Set a uniform width for all buttons
+        double buttonWidth = 120;
+        btnAdd.setPrefWidth(buttonWidth);
+        btnSearch.setPrefWidth(buttonWidth);
+        btnUpdate.setPrefWidth(buttonWidth);
+        btnRemove.setPrefWidth(buttonWidth);
+        btnCalculateFine.setPrefWidth(buttonWidth);
+        btnSignOut.setPrefWidth(buttonWidth);
 
-		sidebar.getChildren().addAll(btnAdd, btnSearch, btnUpdate, btnRemove, btnCalculateFine, btnSignOut);
-		
-		// Main Content
-        VBox mainContent = new VBox(20);
-        mainContent.setPadding(new Insets(30));
+        // Add all buttons to the sidebar
+        sidebar.getChildren().addAll(btnAdd, btnSearch, btnUpdate, btnRemove, btnCalculateFine, btnSignOut);
+
+        // ========== MAIN CONTENT AREA ==========
+        VBox mainContent = new VBox(); // Vertical layout for the center content
+        mainContent.setPadding(new Insets(30)); // Padding around the text area
         mainContent.setStyle("-fx-background-color: linear-gradient(to bottom right, #e6f0ff, #ffffff);");
-        
-     // ScrollPane with Text
+
+        // Creating a read-only text area for displaying info
         TextArea textArea = new TextArea();
-        textArea.setText("Rules and Regulations of Librarian\n 1.\n 2. \n 3.\n 4.\n 5. \n 6.\n 7.\n \n"
-        		+ " Contact\n 1.\n 2. \n 3.\n 4.\n 5. \n \n "
-        		+ "Intresting Facts \n 1.\n 2. \n 3.\n 4.\n 5."); // Scrolling 
-        textArea.setWrapText(true);
-        textArea.setEditable(false);  // Disable editing if it's only for viewing text
-        textArea.setPrefSize(600, 400); // Adjust size based on your content
+        textArea.setWrapText(true); // Text will wrap if it's too long
+        textArea.setEditable(false); // Users can't edit it
+        textArea.setPrefWidth(400); // Fixed width
+        textArea.setPrefHeight(420); // Fixed height
 
-        ScrollPane scrollPane1 = new ScrollPane();
-        scrollPane1.setFitToWidth(true);  // Make the content width fit the ScrollPane width
-        scrollPane1.setFitToHeight(true); // Make the content height fit the ScrollPane height
-        scrollPane1.setContent(textArea);  // Set content of ScrollPane to Rectangle
-        
-        mainContent.getChildren().add(scrollPane1);  // Add ScrollPane with Rectangle to mainContent
+        // Add the text area directly into the center
+        mainContent.getChildren().add(textArea);
 
-     // Menu Bar File
-        MenuBar menuBar1 = new MenuBar();
-        Menu menuFile = new Menu("File");
-        MenuItem menuItem1 = new MenuItem("New");
-        MenuItem menuItem2 = new MenuItem("Open");
-        MenuItem menuItem3 = new MenuItem("Close");        
-        MenuItem menuItem4 = new MenuItem("Exit");
-        MenuItem menuItem5 = new MenuItem("Save");
-        SeparatorMenuItem separator = new SeparatorMenuItem();
+        // TOP MENU BAR 
+        MenuBar menuBar = new MenuBar(); // Horizontal menu bar at the top
 
-        menuFile.getItems().addAll(menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, separator);
-        menuBar1.getMenus().add(menuFile);
+        // File menu and its items
+        Menu fileMenu = new Menu("File");
+        fileMenu.getItems().addAll(
+            new MenuItem("New"),
+            new MenuItem("Open"),
+            new MenuItem("Close"),
+            new MenuItem("Exit"),
+            new MenuItem("Save"),
+            new SeparatorMenuItem() // Adds a line separator
+        );
 
-        // Menu Bar Edit
-        MenuBar menuBar2 = new MenuBar();
-        Menu menuEdit = new Menu("Edit"); 
-        MenuItem menuItemEdit1 = new MenuItem("Copy");
-        MenuItem menuItemEdit2 = new MenuItem("Cut");
-        MenuItem menuItemEdit3 = new MenuItem("Paste");        
-        MenuItem menuItemEdit4 = new MenuItem("Raw Paste");
-        SeparatorMenuItem separator1 = new SeparatorMenuItem();
+        // Edit menu and its items
+        Menu editMenu = new Menu("Edit");
+        editMenu.getItems().addAll(
+            new MenuItem("Copy"),
+            new MenuItem("Cut"),
+            new MenuItem("Paste"),
+            new MenuItem("Raw Paste"),
+            new SeparatorMenuItem()
+        );
 
-        menuEdit.getItems().addAll(menuItemEdit1, menuItemEdit2, menuItemEdit3, menuItemEdit4, separator1);
-        menuBar2.getMenus().add(menuEdit);
+        // Resources menu
+        Menu resourceMenu = new Menu("Resources");
+        resourceMenu.getItems().addAll(
+            new MenuItem("Library"),
+            new MenuItem("Reading Lounge"),
+            new MenuItem("Conference Lounge"),
+            new SeparatorMenuItem()
+        );
 
-        // Menu Bar Resources
-        MenuBar menuBar3 = new MenuBar();
-        Menu menuRes = new Menu("Resources");
-        MenuItem menuRes1 = new MenuItem("Library");
-        MenuItem menuRes2 = new MenuItem("Reading Lounge");
-        MenuItem menuRes3 = new MenuItem("Conference Lounge");        
-        SeparatorMenuItem separator2 = new SeparatorMenuItem();
+        // About/help menu
+        Menu aboutMenu = new Menu("About");
+        aboutMenu.getItems().addAll(
+            new MenuItem("Help"),
+            new MenuItem("Search"),
+            new MenuItem("About Us"),
+            new SeparatorMenuItem()
+        );
 
-        menuRes.getItems().addAll(menuRes1, menuRes2, menuRes3, separator2);
-        menuBar3.getMenus().add(menuRes);
+        // Add all menus to the menu bar
+        menuBar.getMenus().addAll(fileMenu, editMenu, resourceMenu, aboutMenu);
 
-        // Menu Bar About
-        MenuBar menuBar4 = new MenuBar();
-        Menu menuAbo = new Menu("About");
-        MenuItem menuAbo1 = new MenuItem("Help");
-        MenuItem menuAbo2 = new MenuItem("Search");
-        MenuItem menuAbo3 = new MenuItem("About US");
-        MenuItem menuAbo4 = new MenuItem("Check Update");
-        SeparatorMenuItem separator3 = new SeparatorMenuItem();
-
-        menuAbo.getItems().addAll(menuAbo1, menuAbo2, menuAbo3, separator3);
-        menuBar4.getMenus().add(menuAbo);
-
-        // Combine all menu bars in one HBox
-        HBox topContainer = new HBox();
-        topContainer.getChildren().addAll(menuBar1, menuBar2, menuBar3, menuBar4); 
-        root.setTop(topContainer);
-        
-        //Navbar Footer
-        HBox footer = new HBox();
+        // BOTTOM FOOTER 
+        HBox footer = new HBox(); // Horizontal box for the footer
         footer.setPadding(new Insets(15));
-        footer.setAlignment(Pos.CENTER);
-        
+        footer.setAlignment(Pos.CENTER); // Center the content
+
+        // Footer label
         Label footerLabel = new Label("A & N Library");
-        footerLabel.setFont(Font.font("Times New Roman", 16));
+        footerLabel.setFont(Font.font("Times New Roman", 16)); // Font style and size
         footer.getChildren().add(footerLabel);
-        root.setBottom(footer);
-        
-        // Layout Setup
-        root.setTop(topContainer); // Set combined menu bars at the top
-        root.setLeft(sidebar);
-        root.setCenter(mainContent);
-        root.setBottom(footer);
 
-		// Event Handling for the Add Button
-		btnAdd.setOnAction(e -> {
-			// Open the Add window
-			Add add = new Add();
-			try {
-				add.start(new Stage()); // Open a new stage for the Menu
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+        // PLACING EVERYTHING IN LAYOUT 
+        root.setTop(menuBar);       // Menu bar at the top
+        root.setLeft(sidebar);      // Sidebar on the left
+        root.setCenter(mainContent); // Main area in the center
+        root.setBottom(footer);     // Footer at the bottom
 
-		btnSearch.setOnAction(e -> {
-			// Open the Search window
-			Search search = new Search();
-			try {
-				search.start(new Stage()); // Open a new stage for the Menu
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+        // BUTTON ACTIONS 
+        // Each button opens a new window (new Stage)
+        btnAdd.setOnAction(e -> {
+            try {
+                new Add().start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-		btnUpdate.setOnAction(e -> {
-			// Open the Update window
-			Update update = new Update();
-			try {
-				update.start(new Stage()); // Open a new stage for the Menu
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+        btnSearch.setOnAction(e -> {
+            try {
+                new Search().start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-		btnRemove.setOnAction(e -> {
-			// Open the Remove window
-			Remove remove = new Remove();
-			try {
-				remove.start(new Stage()); // Open a new stage for the Menu
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+        btnUpdate.setOnAction(e -> {
+            try {
+                new Update().start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-		btnCalculateFine.setOnAction(e -> {
-			// Open the Calculate Fine Window
-			// Remove CalculateFine = new CalculateFine();
-			try {
-				new Fine_test().start(new Stage());
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		});
+        btnRemove.setOnAction(e -> {
+            try {
+                new Remove().start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-		btnSignOut.setOnAction(e -> {
-		    // Create a new Stage for the Library Login page
-		    Librarian_Login loginPage = new Librarian_Login();
-		    try {
-		        // Start the Login page
-		        loginPage.start(new Stage());
-		        
-		        // Close the current dashboard window
-		        primaryStage.close(); // Close the current Librarian Dashboard window
-		    } catch (Exception ex) {
-		        ex.printStackTrace();
-		    }
-		});
-		
+        btnCalculateFine.setOnAction(e -> {
+            try {
+                new Fine_Calculation().start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-		primaryStage.setTitle("Librarian Dashboard");
-		primaryStage.show();
-	}
+        // Sign out button closes current window and opens login
+        btnSignOut.setOnAction(e -> {
+            try {
+                new Librarian_Login().start(new Stage());
+                primaryStage.close(); // Close the current dashboard
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-	public static void main(String[] args) {
-		launch(args); // Call start method
-	}
+        // Window title and showing the stage
+        primaryStage.setTitle("Librarian Dashboard");
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args); 
+    }
 }
