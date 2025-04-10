@@ -76,7 +76,12 @@ public class Remove extends Application {
 
         // Remove button
         Button btnRemove = new Button("Remove");
-        btnRemove.relocate(155, 300);
+        btnRemove.relocate(125, 300);
+        
+     // Close button to exit the window
+        Button btnClose = new Button("Close");
+        btnClose.relocate(200, 300);
+        btnClose.setOnAction(event -> primaryStage.close()); // Close window when clicked
 
         // Event handlers for the buttons
         btnSearch.setOnAction(event -> searchBook(txtBook_ID.getText(), txtTitle, txtAuthor, txtEdition, txtQuantity));
@@ -86,7 +91,7 @@ public class Remove extends Application {
 
         // Add all UI components to the pane
         pane.getChildren().addAll(lblDelete_Book, lblBook_ID, txtBook_ID, lblTitle, txtTitle, lblAuthor, txtAuthor,
-                lblEdition, txtEdition, lblQuantity, txtQuantity, btnRemove, btnSearch);
+                lblEdition, txtEdition, lblQuantity, txtQuantity, btnRemove, btnSearch, btnClose);
     }
 
     // Method to search for a book in the database
