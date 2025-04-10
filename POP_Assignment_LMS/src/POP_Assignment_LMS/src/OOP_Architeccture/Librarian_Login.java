@@ -61,8 +61,8 @@ public class Librarian_Login extends Application {
 
         // Message Label for displaying login status
         Label lblMessage = new Label();
-        lblMessage.setFont(new Font("Arial", 12));
-        lblMessage.relocate(30, 260);
+        lblMessage.setFont(new Font("Arial", 16));
+        lblMessage.relocate(50, 260);
 
         // Login Button Action
         btnLogin.setOnAction(e -> {
@@ -85,7 +85,7 @@ public class Librarian_Login extends Application {
                 primaryStage.close(); // Close login window
             } else {
                 lblMessage.setText("Invalid username or password.");
-                lblMessage.setStyle("-fx-text-fill: red;");
+                lblMessage.setStyle("-fx-font-weight: bold; -fx-text-fill: red;" );
             }
         });
 
