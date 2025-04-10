@@ -54,6 +54,12 @@ public class Fine_Calculation extends Application {
         Button btnCalculate = new Button("Calculate Fine");
         btnCalculate.relocate(150, 200);
 
+        
+     // Close button to exit the window
+        Button  btnClose = new Button("Close");
+        btnClose.relocate(250, 200);
+        btnClose.setOnAction(event -> primaryStage.close()); // Close window when clicked
+        
         // Label to display the result
         Label lblResult = new Label();
         lblResult.relocate(30, 250);
@@ -86,7 +92,7 @@ public class Fine_Calculation extends Application {
         });
 
         // Add components to the pane
-        pane.getChildren().addAll(lblTitle, lblStudent, txtStudent, lblReturnDate, dpReturnDate, btnCalculate, lblResult);
+        pane.getChildren().addAll(lblTitle, lblStudent, txtStudent, lblReturnDate, dpReturnDate, btnCalculate, btnClose, lblResult);
     }
 
     // Method to calculate fine based on borrow and return dates
