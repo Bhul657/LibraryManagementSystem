@@ -66,13 +66,13 @@ public class Add extends Application {
         TextField txtQuantity = new TextField();
         txtQuantity.relocate(110, 245);
 
-        // Buttons
-        Button btnClose = new Button("Close");
-        btnClose.relocate(200, 300);
-        btnClose.setOnAction(event -> goBackToDashboard(primaryStage)); // Close and go back
-
         Button btnAdd = new Button("Add");
         btnAdd.relocate(125, 300);
+        
+     // Close button to exit the window
+        Button btnClose  = new Button("Close");
+        btnClose.relocate(200, 300);
+        btnClose.setOnAction(event -> primaryStage.close()); // Close window when clicked
 
         // Message label to display success or error messages
         Label lblMessage = new Label();
